@@ -16,9 +16,9 @@ module Inum
     # @option options [Symbol]    :strict     Raise if value was not found in enum_class. (default: column)
     # @option options [Symbol]    :string     Raise if value was not found in enum_class. (default: column)
     def bind_inum column, enum_class, **options
-      options[:prefix] = options[:prefix] ? "#{column}_" : "#{options[:prefix]}"
+      options[:prefix] = options[:prefix] ? "#{column}_" : "#{options[:prefix]}_"
       parse_method     = options[:strict] ? 'parse!' : 'parse'
-      valuate_method   = options[:stirng] ? 'value' : 'to_i'
+      valuate_method   = options[:string] ? 'value' : 'to_i'
 
       self.class_eval do
         define_method(column) do
