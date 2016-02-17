@@ -13,19 +13,22 @@ module Inum
     # @param enum_class [Inum::Base]  Binding Enum.
     # @param options    [Hash]        option
     # @option options [Symbol]    :prefix     Prefix. (default: column)
-    def bind_inum(column, enum_class, options = {})
-      options = { prefix: column }.merge(options)
-      options[:prefix] = options[:prefix] ? "#{options[:prefix]}_" : ''
+    # @option options [Symbol]    :strict     Raise if value was not found in enum_class. (default: column)
+    # @option options [Symbol]    :string     Raise if value was not found in enum_class. (default: column)
+    def bind_inum column, enum_class, **options
+      options[:prefix] = options[:prefix] ? "#{column}_" : "#{options[:prefix]}"
+      parse_method     = options[:strict] ? 'parse!' : 'parse'
+      valuate_method   = options[:stirng] ? 'value' : 'to_i'
 
       self.class_eval do
         define_method(column) do
-          enum_class.parse(read_attribute(column))
+          enum_class.send(parse_method, read_attribute(column))
         end
 
         define_method("#{column}=") do |value|
-          enum_class.parse(value).tap do |enum|
+          enum_class.send(parse_method, value).tap do |enum|
             if enum
-              write_attribute(column, enum.to_i)
+              write_attribute(column, enum.send(valuate_method))
             else
               write_attribute(column, nil)
             end

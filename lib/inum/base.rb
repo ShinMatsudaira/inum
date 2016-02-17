@@ -90,11 +90,17 @@ module Inum
 
     # Value of Enum.
     #
-    # @return [Integer] Value of Enum.
+    # @return [Object] Value of Enum.
     def value
       @value
     end
-    alias_method :to_i, :value
+
+    # Fixnum value of Enum.
+    #
+    # @return [Integer] Fixnum value of Enum.
+    def to_i
+      @value.to_i
+    end
 
     # Get collection.
     # @note Type of usable with a Rails form helper.
