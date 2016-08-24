@@ -13,10 +13,10 @@ module Inum
     # @param enum_class [Inum::Base]  Binding Enum.
     # @param options    [Hash]        option
     # @option options [Symbol]    :prefix     Prefix. (default: column)
-    # @option options [Symbol]    :strict     Raise if value was not found in enum_class. (default: column)
-    # @option options [Symbol]    :string     Raise if value was not found in enum_class. (default: column)
+    # @option options [true, false]    :strict     Raise if value was not found in enum_class.
+    # @option options [true, false]    :string     Treat value as String.
     def bind_inum column, enum_class, **options
-      options[:prefix] = options[:prefix] ? "#{column}_" : "#{options[:prefix]}_"
+      options[:prefix] = options[:prefix] ? "#{options[:prefix]}_" : "#{column}_"
       parse_method     = options[:strict] ? 'parse!' : 'parse'
       valuate_method   = options[:string] ? 'value' : 'to_i'
 
