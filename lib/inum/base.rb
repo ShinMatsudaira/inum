@@ -174,7 +174,7 @@ module Inum
       when self
         object
       else
-        nil
+        find {|e| e.value == object or e.label == object}
       end
     end
 
